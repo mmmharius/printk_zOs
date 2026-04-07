@@ -1,0 +1,25 @@
+#ifndef PRINTK_H
+#define PRINTK_H
+
+#include <color.h>
+#include <io.h>
+#include <screen.h>
+#include <stdint.h>
+
+#define COM1 0x3F8
+
+#define VGA    0
+#define SERIAL 1
+#define DBG    2
+
+int	ft_kputchar(uint8_t c, int output);
+int	ft_putstr(char *str, int output);
+int ft_putptr(uint32_t addr, int output);
+int	ft_putpercent(int output);
+int	ft_formats(uint32_t* args, const char format, int output);
+int	printk(int output, const char *str, ...);
+int	ft_puthex(unsigned int num, char format, int output);
+int	ft_putnbr(int n, int output);
+int	ft_putnsigned(unsigned int n, int output);
+
+#endif
