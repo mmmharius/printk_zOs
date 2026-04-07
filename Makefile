@@ -1,4 +1,4 @@
-NAME = printk.a
+NAME = printk_zOs.a
 CC = gcc
 CFLAGS = -m32 -Wall -Wextra -Werror -fno-builtin -fno-stack-protector -nostdlib -nodefaultlibs -Iincludes -I../../include $(EXTRA_CFLAGS)
 SRC = src/printk.c src/ft_puthex.c src/ft_putnbr.c src/ft_putnsigned.c src/ft_putptr.c

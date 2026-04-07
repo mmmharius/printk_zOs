@@ -1,9 +1,7 @@
-# include/printk/ — formatted output library
+# include/printk_zOs/ — formatted output library
 
 `printk` is a `printf`-style output function for the kernel.
 It supports writing to VGA (screen), serial port (COM1), or the debug screen.
-
-Builds into `printk.a`, linked into every kernel binary.
 
 ---
 
@@ -63,7 +61,6 @@ a pointer cast. This works because the kernel is compiled as 32-bit cdecl
 (`-m32`), where all arguments are pushed onto the stack in order.
 In 32-bit cdecl, `&str + 1` points exactly to the first variadic argument.
 
-This would not work in 64-bit code (where args go in registers first).
 
 ### Format specifiers
 
@@ -77,48 +74,6 @@ This would not work in 64-bit code (where args go in registers first).
 %X   hex uppercase                     ft_puthex
 %p   pointer  (0x + 8 hex digits)      ft_putptr
 %%   literal percent sign
-```
-
----
-
-## Output routing — ft_kputchar
-
-```c
-int ft_kputchar(uint8_t c, int output) {
-    if (output == SERIAL) {
-        while ((inb(COM1 + 5) & 0x20) == 0);  // wait: transmitter empty
-        outb(COM1, c);
-        return 1;
-    }
-    #ifdef DEBUG
-    if (output == DBG) {
-        screen_putchar(c, DEBUG_SCREEN_ID);    // screen 2
-        return 1;
-    }
-    #endif
-    screen_putchar(c, scr.current);            // active screen
-    return 1;
-}
-```
-
-### Why the serial wait loop ?
-
-`COM1 + 5 = 0x3FD` is the Line Status Register of the UART.
-Bit 5 (0x20) = "transmitter holding register empty" = safe to send a byte.
-
-If we write before the previous byte is sent, it gets silently dropped.
-
-```
-COM1 serial port registers (base = 0x3F8):
-
-  +0  Data Register          read/write a byte
-  +1  Interrupt Enable Reg   (we don't use interrupts)
-  +2  Interrupt ID Reg
-  +3  Line Control Reg
-  +4  Modem Control Reg
-  +5  Line Status Reg        bit 5 = TX empty ← we check this
-  +6  Modem Status Reg
-  +7  Scratch Reg
 ```
 
 ---
