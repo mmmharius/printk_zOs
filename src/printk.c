@@ -48,9 +48,9 @@ int ft_putpercent(int output) {
     return ft_kputchar('%', output);
 }
 
-int ft_formats(uint32_t *args, const char format, int output) {
+int ft_formats(va_list *args, const char format, int output) {
     int      nb_caracter = 0;
-    uint32_t val         = *args;
+    uint32_t val         = va_arg(*args, uint32_t); 
 
     if (format == 'c')
         nb_caracter += ft_kputchar((char)val, output);
@@ -70,17 +70,18 @@ int ft_formats(uint32_t *args, const char format, int output) {
 }
 
 int printk(int output, const char *str, ...) {
-    uint32_t *args        = (uint32_t *)(&str + 1);
-    int       nb_caracter = 0;
+    va_list args;
+    va_start(args, str);
+    int nb_caracter = 0;
 
     for (int i = 0; str[i]; i++) {
         if (str[i] == '%') {
-            nb_caracter += ft_formats(args, str[i + 1], output);
-            args++;
+            nb_caracter += ft_formats(&args, str[i + 1], output);
             i++;
         } else {
             nb_caracter += ft_kputchar(str[i], output);
         }
     }
+    va_end(args);
     return nb_caracter;
 }

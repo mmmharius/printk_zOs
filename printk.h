@@ -5,6 +5,7 @@
 #include <io.h>
 #include <screen.h>
 #include <stdint.h>
+#include <stdarg.h>
 
 #define COM1 0x3F8
 
@@ -16,7 +17,7 @@ int	ft_kputchar(uint8_t c, int output);
 int	ft_putstr(char *str, int output);
 int ft_putptr(uint32_t addr, int output);
 int	ft_putpercent(int output);
-int	ft_formats(uint32_t* args, const char format, int output);
+int ft_formats(va_list *args, const char format, int output);
 int	printk(int output, const char *str, ...);
 int	ft_puthex(unsigned int num, char format, int output);
 int	ft_putnbr(int n, int output);
