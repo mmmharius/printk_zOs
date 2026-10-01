@@ -19,6 +19,7 @@ int ft_putptr(uint32_t addr, int output);
 int	ft_putpercent(int output);
 int ft_formats(va_list *args, const char format, int output);
 int	printk(int output, const char *str, ...);
+int ft_puthex_padded(unsigned int num, int width, char format, int output);
 int	ft_puthex(unsigned int num, char format, int output);
 int	ft_putnbr(int n, int output);
 int	ft_putnsigned(unsigned int n, int output);

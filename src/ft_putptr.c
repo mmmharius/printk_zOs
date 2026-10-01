@@ -7,9 +7,11 @@ int ft_putptr(uint32_t addr, int output) {
     unsigned int high = (addr >> 16) & 0xFFFF;
     unsigned int low = addr & 0xFFFF;
     
-    if (high)
+    if (high) {
         nb_caracter += ft_puthex(high, 'x', output);
-    nb_caracter += ft_puthex(low, 'x', output);
-    
+        nb_caracter += ft_puthex_padded(low, 4, 'x', output);
+    }
+    else
+        nb_caracter += ft_puthex(low, 'x', output);
     return nb_caracter;
 }
